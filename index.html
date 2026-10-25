@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>تم الاختراق</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Reem+Kufi:wght@600;700&family=Share+Tech+Mono&display=swap">
+<style>
+/* Layout: one centered column. Four phases swap in place: plain loading page, glitch burst, hack screen that freezes dead, halt screen, then a bright reveal. */
+:root {
+  --bg: #060708;
+  --ink: #e9fff0;
+  --green: #3dff86;
+  --green-dim: #1c6b3b;
+  --red: #ff2740;
+  --red-deep: #3a060d;
+  --boot-bg: #f3f5f7;
+  --boot-ink: #2a3138;
+  --paper: #fff3c4;
+  --paper-ink: #1d1500;
+  --pop: #ff5a1f;
+  --font-display: "Reem Kufi", "Segoe UI", Tahoma, sans-serif;
+  --font-body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --font-mono: "Share Tech Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  background: var(--boot-bg);
+  color: var(--boot-ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.6;
+  padding-block: 0;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+body.hot { background: var(--bg); color: var(--ink); }
+body.halt { background: #000; color: #d8d8d8; }
+body.safe { background: var(--paper); color: var(--paper-ink); }
+#app { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding-block: 20px; }
+[hidden] { display: none !important; }
+
+/* ---------- phase 1: plain loading page ---------- */
+#boot { display: flex; flex-direction: column; align-items: center; gap: 18px; text-align: center; }
+.spin { width: 44px; height: 44px; border: 4px solid #cfd6dc; border-top-color: #4b5560; border-radius: 50%; animation: spin .9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+#boot p { margin: 0; font-size: 18px; }
+#boot small { color: #77828d; font-size: 14px; }
+
+/* ---------- phase 2: glitch burst ---------- */
+#app.burst { animation: burst .7s steps(1) forwards; }
+@keyframes burst {
+  0% { transform: translateX(-12px) skewX(4deg); filter: invert(1); }
+  14% { transform: translateX(16px); filter: none; }
+  28% { transform: translate(-8px, 6px) skewX(-6deg); filter: hue-rotate(120deg) saturate(4); }
+  42% { transform: translateX(10px); filter: invert(1); }
+  57% { transform: scaleY(.6); filter: none; }
+  71% { transform: translateX(-14px) skewX(5deg); filter: invert(1) hue-rotate(200deg); }
+  85% { transform: translateX(6px); filter: none; }
+  100% { transform: none; filter: none; }
+}
+
+/* ---------- phase 3: hack screen ---------- */
+.scan, .vignette { display: none; }
+body.hot .scan, body.hot .vignette { display: block; }
+.scan { position: fixed; inset: 0; pointer-events: none; z-index: 5;
+  background: repeating-linear-gradient(to bottom, rgba(255,255,255,.035) 0 1px, transparent 1px 3px); }
+.vignette { position: fixed; inset: 0; pointer-events: none; z-index: 4;
+  box-shadow: inset 0 0 120px 20px rgba(255,39,64,.55); animation: pulse 1.1s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+
+#hack { width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 14px; position: relative; }
+.bar { display: flex; align-items: center; gap: 10px; background: var(--red); color: #fff; padding: 8px 12px; font-weight: 700; letter-spacing: .02em; animation: blink 1s steps(2) infinite; }
+.bar .tri { width: 26px; height: 26px; border: 2px solid #fff; display: grid; place-items: center; font-family: var(--font-mono); font-size: 18px; flex: none; cursor: pointer; user-select: none; }
+@keyframes blink { 50% { background: #8d0f20; } }
+
+h1 { margin: 6px 0 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(40px, 13vw, 72px); line-height: 1.05; color: var(--red); text-wrap: balance;
+  text-shadow: 3px 0 #00ffe1, -3px 0 #ff00c8; animation: glitch 2.2s infinite steps(1); }
+@keyframes glitch {
+  0% { transform: translate(0); } 7% { transform: translate(-4px, 1px); } 9% { transform: translate(5px, -2px); text-shadow: -4px 0 #00ffe1, 4px 0 #ff00c8; }
+  11% { transform: translate(0); } 55% { transform: translate(0); } 57% { transform: translate(6px, 0); clip-path: inset(30% 0 40% 0); } 59% { transform: translate(0); clip-path: none; } 100% { transform: translate(0); }
+}
+.lead { margin: 0; font-size: 17px; color: #ffc9cf; }
+.lead b { color: #fff; }
+
+.meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-family: var(--font-mono); font-size: 13px; direction: ltr; }
+.meta div { border: 1px solid var(--green-dim); padding: 6px 10px; color: var(--green); min-width: 0; overflow-wrap: anywhere; }
+.meta span { color: #7fbf9a; display: block; font-size: 11px; letter-spacing: .08em; }
+
+.term { direction: ltr; text-align: left; border: 1px solid var(--green-dim); background: #020403; height: 210px; overflow: hidden; padding: 10px 12px; font-family: var(--font-mono); font-size: 13px; line-height: 1.55; color: var(--green); display: flex; flex-direction: column; justify-content: flex-end; }
+.term p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.term .warn { color: #ffb02e; }
+.term .bad { color: var(--red); }
+.term .ar { direction: rtl; text-align: right; font-family: var(--font-body); font-size: 13.5px; }
+
+.prog { display: flex; flex-direction: column; gap: 6px; }
+.prog-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 15px; }
+.prog-top .pct { font-family: var(--font-mono); font-size: 26px; color: var(--green); direction: ltr; font-variant-numeric: tabular-nums; }
+.track { height: 16px; border: 1px solid var(--green); background: #020403; direction: ltr; }
+.fill { height: 100%; width: 0%; background: repeating-linear-gradient(90deg, var(--green) 0 10px, #1fae57 10px 14px); }
+.eta { font-family: var(--font-mono); font-size: 13px; color: #7fbf9a; direction: ltr; text-align: left; }
+
+.stop { appearance: none; border: 2px solid var(--red); background: transparent; color: #fff; font: 700 17px var(--font-body); padding: 12px 16px; min-height: 48px; cursor: pointer; }
+.stop:focus-visible, .btn:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.stop.shake { animation: shake .4s; }
+@keyframes shake { 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+
+.denied { position: fixed; inset: 0; z-index: 8; display: grid; place-items: center; background: rgba(58,6,13,.92); text-align: center; padding: 24px; }
+.denied strong { display: block; font-family: var(--font-mono); font-size: clamp(30px, 10vw, 54px); color: var(--red); letter-spacing: .06em; }
+.denied span { font-size: 18px; color: #fff; }
+
+/* frozen: every animation stops mid-frame, nothing reacts to touch, no cursor */
+#app.frozen, #app.frozen * { animation-play-state: paused !important; cursor: none !important; }
+#app.frozen { pointer-events: none; user-select: none; }
+body.frozen-shield::after { content: ""; position: fixed; inset: 0; z-index: 99; }
+
+/* ---------- phase 4: halt ---------- */
+#halt { width: 100%; max-width: 560px; direction: ltr; text-align: left; font-family: var(--font-mono); font-size: 14px; line-height: 1.7; align-self: flex-start; margin-top: 10vh; }
+#halt p { margin: 0; overflow-wrap: anywhere; }
+#halt .big { font-size: clamp(22px, 7vw, 34px); color: #fff; margin-bottom: 10px; }
+#halt .cur { display: inline-block; width: 9px; height: 16px; background: #d8d8d8; vertical-align: -2px; animation: blink2 .8s steps(1) infinite; }
+@keyframes blink2 { 50% { opacity: 0; } }
+
+/* ---------- phase 5: reveal ---------- */
+#reveal { width: 100%; max-width: 520px; text-align: right; position: relative; z-index: 3; display: flex; flex-direction: column; gap: 14px; }
+.tag { align-self: flex-start; background: var(--paper-ink); color: var(--paper); font-weight: 700; padding: 4px 12px; font-size: 14px; letter-spacing: .04em; }
+#reveal h2 { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: clamp(54px, 20vw, 108px); line-height: 1; color: var(--pop); text-wrap: balance; }
+#reveal p { margin: 0; font-size: 19px; max-width: 34ch; }
+.check { border-top: 2px solid var(--paper-ink); padding-top: 12px; display: flex; flex-direction: column; gap: 4px; font-size: 16px; }
+.check div { display: flex; gap: 10px; align-items: baseline; }
+.check i { font-style: normal; font-family: var(--font-mono); font-weight: 700; color: #0a7a35; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px; }
+.btn { appearance: none; border: 2px solid var(--paper-ink); background: var(--paper-ink); color: var(--paper); font: 700 16px var(--font-body); padding: 11px 18px; min-height: 46px; cursor: pointer; }
+.btn.alt { background: transparent; color: var(--paper-ink); }
+#confetti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+
+@media (prefers-reduced-motion: reduce) {
+  h1, .vignette, .bar { animation: none; }
+  #app.burst { animation: none; }
+}
+</style>
+</head>
+<body>
+<div id="app" dir="rtl" lang="ar">
+  <div class="scan" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <div id="boot">
+    <div class="spin" aria-hidden="true"></div>
+    <p>جاري تحميل الصفحة…</p>
+    <small>استنى ثواني</small>
+  </div>
+
+  <main id="hack" hidden>
+    <div class="bar"><span class="tri" id="secret">!</span><span>تحذير أمني حرج / CRITICAL ALERT</span></div>
+    <h1 id="title">تم اختراق جهازك</h1>
+    <p class="lead">تم الوصول للجهاز بالكامل. <b>ممنوع</b> تقفل الصفحة أو تفصل النت.</p>
+
+    <div class="meta">
+      <div><span>TARGET IP</span><b id="ip">--</b></div>
+      <div><span>SESSION</span><b id="sess">--</b></div>
+    </div>
+
+    <div class="term" id="term"></div>
+
+    <div class="prog">
+      <div class="prog-top"><span id="stage">جاري رفع الملفات…</span><span class="pct" id="pct">0%</span></div>
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <div class="eta" id="eta">ETA 00:14</div>
+    </div>
+
+    <button class="stop" id="stop" type="button">إيقاف العملية</button>
+  </main>
+
+  <section id="halt" hidden>
+    <p class="big">SYSTEM HALTED</p>
+    <p id="h1">kernel panic - not syncing: fatal exception</p>
+    <p id="h2">0x0000007B  0xC0000034  0xDEAD10CC</p>
+    <p id="h3">cpu0: stuck for 22s! [ghost:1337]</p>
+    <p id="h4">Rebooting in 3<span class="cur"></span></p>
+  </section>
+
+  <section id="reveal" hidden>
+    <span class="tag">إعلان رسمي</span>
+    <h2>مقلب!</h2>
+    <p id="revealText">محدش اخترق حاجة. جهازك سليم وكل ملفاتك في مكانها، والتهنيج كان تمثيل.</p>
+    <div class="check">
+      <div><i>OK</i><span>مفيش هاكر</span></div>
+      <div><i>OK</i><span>مفيش ملفات اترفعت</span></div>
+      <div><i>OK</i><span>الوحيد اللي اتهنج هو أعصابك</span></div>
+    </div>
+    <div class="row">
+      <button class="btn" id="again" type="button">شوف المقلب تاني</button>
+      <button class="btn alt" id="copy" type="button">انسخ اللينك</button>
+    </div>
+  </section>
+
+  <div class="denied" id="denied" hidden>
+    <div><strong>ACCESS DENIED</strong><span id="deniedMsg">مرفوض. مش هتقدر توقف العملية.</span></div>
+  </div>
+  <canvas id="confetti" aria-hidden="true"></canvas>
+</div>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var app = $('app'), boot = $('boot'), hack = $('hack'), halt = $('halt'), reveal = $('reveal'), term = $('term');
+  var RUN = 15000;          // how long the hack screen runs before it freezes
+  var FREEZE_AT = 71;       // percent where it dies
+  var FREEZE_HOLD = 8000;   // dead silence, nothing responds
+  var timers = [], raf = 0, startedAt = 0, phase = 'boot', stopTaps = 0, runId = 0;
+
+  function later(fn, ms, id) { timers.push(setTimeout(function () { if (id === runId) fn(); }, ms)); }
+  function clearAll() { timers.forEach(clearTimeout); timers = []; cancelAnimationFrame(raf); stopSiren(); }
+  function rnd(n) { return Math.floor(Math.random() * n); }
+  function hex(n) { var s = ''; while (n--) s += '0123456789abcdef'[rnd(16)]; return s; }
+  function buzz(p) { try { if (navigator.vibrate) navigator.vibrate(p); } catch (e) {} }
+  function setBody(cls) { document.body.className = cls || ''; }
+
+  // optional friend name: open the link with #Name
+  var friend = '';
+  try { friend = decodeURIComponent(location.hash.slice(1)).slice(0, 20); } catch (e) {}
+  if (friend) {
+    $('title').textContent = 'تم اختراقك يا ' + friend;
+    $('revealText').textContent = 'يا ' + friend + '، محدش اخترق حاجة. جهازك سليم وكل ملفاتك في مكانها، والتهنيج كان تمثيل.';
+  }
+
+  var lines = [
+    ['[ OK ] tunnel opened'],
+    ['[ OK ] bypassing firewall ........ done'],
+    ['[ OK ] root access granted'],
+    ['جاري قراءة الرسائل…', 'ar'],
+    ['> mount /dev/photos  [' + hex(6) + ']'],
+    ['[WARN] antivirus detected -> disabled', 'warn'],
+    ['جاري نسخ الصور والفيديوهات…', 'ar'],
+    ['> scp -r /storage ghost@' + hex(4) + '.onion:/dump'],
+    ['[ OK ] contacts.db copied'],
+    ['[FAIL] camera lock ... retrying', 'bad'],
+    ['[ OK ] camera lock bypassed'],
+    ['جاري تشفير الملفات…', 'ar'],
+    ['> openssl enc -aes-256 -in all.zip'],
+    ['[WARN] memory usage 97%', 'warn'],
+    ['[WARN] cpu temp critical', 'warn'],
+    ['> cat /etc/shadow | head -n 3'],
+    ['[ OK ] browser history exported'],
+    ['[FAIL] process not responding', 'bad'],
+    ['> kill -9 ' + (1000 + rnd(8000)), 'warn']
+  ];
+  var li = 0;
+  function addLine(text, cls) {
+    var p = document.createElement('p');
+    p.textContent = text; if (cls) p.className = cls;
+    term.appendChild(p);
+    while (term.children.length > 14) term.removeChild(term.firstChild);
+  }
+  function logLoop(id) {
+    if (phase !== 'hack' || id !== runId) return;
+    var item = lines[li % lines.length]; li++;
+    addLine(item[0], item[1]);
+    if (Math.random() < 0.5) addLine(hex(14) + ' ' + hex(14) + ' ' + hex(6));
+    var t = Math.min(1, (performance.now() - startedAt) / RUN);
+    var gap = 420 - t * 300 + rnd(160);   // lines come faster as it nears the crash
+    later(function () { logLoop(id); }, gap, id);
+  }
+
+  var stages = [[0, 'جاري رفع الملفات…'], [0.4, 'جاري نسخ الصور…'], [0.7, 'جاري سحب الرسائل…'], [0.9, 'فشل: لا يوجد استجابة']];
+  function tick(now, id) {
+    if (phase !== 'hack' || id !== runId) return;
+    var t = Math.min(1, (now - startedAt) / RUN);
+    var p = Math.pow(t, 1.15) * FREEZE_AT;
+    $('fill').style.width = p + '%';
+    $('pct').textContent = Math.floor(p) + '%';
+    var left = Math.max(0, Math.ceil((RUN - (now - startedAt)) / 1000));
+    $('eta').textContent = 'ETA 00:' + (left < 10 ? '0' : '') + left;
+    for (var i = stages.length - 1; i >= 0; i--) { if (t >= stages[i][0]) { $('stage').textContent = stages[i][1]; break; } }
+    if (t >= 1) { freeze(id); return; }
+    raf = requestAnimationFrame(function (n) { tick(n, id); });
+  }
+
+  // ---- siren, starts on the first tap (browsers block sound before that) ----
+  var ac = null, osc = null, sirenTimer = 0, tapped = false;
+  function startSiren() {
+    if (ac || phase !== 'hack') return;
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      ac = new AC();
+      osc = ac.createOscillator(); var g = ac.createGain();
+      osc.type = 'sawtooth'; g.gain.value = 0.05;
+      osc.connect(g); g.connect(ac.destination); osc.start();
+      var hi = false;
+      sirenTimer = setInterval(function () { hi = !hi; osc.frequency.setTargetAtTime(hi ? 880 : 620, ac.currentTime, 0.05); }, 450);
+    } catch (e) {}
+  }
+  function stopSiren() {
+    clearInterval(sirenTimer);
+    try { if (osc) osc.stop(); if (ac) ac.close(); } catch (e) {}
+    ac = osc = null;
+  }
+  document.addEventListener('pointerdown', function () {
+    if (tapped) return; tapped = true;
+    try { var el = document.documentElement; if (el.requestFullscreen) el.requestFullscreen().catch(function () {}); } catch (e) {}
+    startSiren();
+  });
+
+  // ---------- phases ----------
+  function begin() {
+    runId++; var id = runId;
+    clearAll();
+    phase = 'boot'; stopTaps = 0; li = 0; term.innerHTML = '';
+    app.className = ''; app.dir = 'rtl';
+    setBody('');
+    hack.hidden = true; halt.hidden = true; reveal.hidden = true; boot.hidden = false; $('denied').hidden = true;
+    $('fill').style.width = '0%'; $('pct').textContent = '0%';
+    $('ip').textContent = [rnd(200) + 10, rnd(250), rnd(250), rnd(250)].join('.');
+    $('sess').textContent = hex(8).toUpperCase();
+    later(function () { burst(id); }, 2800, id);
+  }
+
+  function burst(id) {
+    phase = 'burst';
+    app.classList.add('burst');
+    buzz([120, 60, 120, 60, 200]);
+    later(function () {
+      app.classList.remove('burst');
+      phase = 'hack';
+      boot.hidden = true; hack.hidden = false;
+      setBody('hot');
+      startedAt = performance.now();
+      if (tapped) startSiren();
+      logLoop(id);
+      raf = requestAnimationFrame(function (n) { tick(n, id); });
+    }, 700, id);
+  }
+
+  function freeze(id) {
+    phase = 'frozen';
+    clearAll();
+    $('stage').textContent = 'جاري رفع الملفات…';
+    $('denied').hidden = true;
+    app.classList.add('frozen');
+    document.body.classList.add('frozen-shield');
+    buzz(0);
+    // one tiny flicker deep into the freeze, then nothing again
+    later(function () { app.style.opacity = '0.82'; later(function () { app.style.opacity = ''; }, 90, id); }, FREEZE_HOLD * 0.55, id);
+    later(function () { toHalt(id); }, FREEZE_HOLD, id);
+  }
+
+  function toHalt(id) {
+    phase = 'halt';
+    document.body.classList.remove('frozen-shield');
+    app.classList.remove('frozen');
+    hack.hidden = true; $('denied').hidden = true;
+    setBody('halt');
+    app.style.opacity = '0';
+    later(function () {
+      app.style.opacity = '';
+      halt.hidden = false; app.dir = 'ltr';
+      ['h1', 'h2', 'h3'].forEach(function (k) { $(k).style.visibility = 'hidden'; });
+      $('h4').style.visibility = 'hidden';
+      later(function () { $('h1').style.visibility = 'visible'; }, 300, id);
+      later(function () { $('h2').style.visibility = 'visible'; }, 800, id);
+      later(function () { $('h3').style.visibility = 'visible'; }, 1300, id);
+      later(function () { $('h4').style.visibility = 'visible'; }, 1800, id);
+      later(function () { showReveal(id); }, 3600, id);
+    }, 1400, id);
+  }
+
+  function showReveal(id) {
+    if (phase === 'reveal') return;
+    phase = 'reveal';
+    clearAll();
+    app.classList.remove('frozen'); app.style.opacity = '';
+    document.body.classList.remove('frozen-shield');
+    app.dir = 'rtl';
+    boot.hidden = true; hack.hidden = true; halt.hidden = true; $('denied').hidden = true;
+    reveal.hidden = false;
+    setBody('safe');
+    buzz([60, 40, 60, 40, 120]);
+    confetti();
+  }
+
+  // stop button: it fights back, and gives up after three taps
+  var denies = ['مرفوض. مش هتقدر توقف العملية.', 'قلنا مرفوض. العملية شغالة غصب عنك.', 'خلاص خلاص، هنوقف… لحظة واحدة.'];
+  $('stop').addEventListener('click', function () {
+    if (phase !== 'hack') return;
+    var id = runId;
+    stopTaps++;
+    $('deniedMsg').textContent = denies[Math.min(stopTaps - 1, denies.length - 1)];
+    $('denied').hidden = false;
+    var b = $('stop'); b.classList.remove('shake'); void b.offsetWidth; b.classList.add('shake');
+    buzz(300);
+    later(function () {
+      $('denied').hidden = true;
+      if (stopTaps >= 3 && phase === 'hack') freeze(id);   // the third tap kills the screen early
+    }, stopTaps >= 3 ? 1400 : 1100, id);
+  });
+
+  // owner shortcuts: tap the warning box 4 times, or press Escape, to jump to the reveal
+  var secretTaps = 0, secretTimer = 0;
+  $('secret').addEventListener('click', function (e) {
+    e.stopPropagation();
+    secretTaps++; clearTimeout(secretTimer);
+    secretTimer = setTimeout(function () { secretTaps = 0; }, 1200);
+    if (secretTaps >= 4) showReveal(runId);
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && phase !== 'reveal') showReveal(runId); });
+
+  $('again').addEventListener('click', function () { stopConfetti(); begin(); });
+  $('copy').addEventListener('click', function () {
+    var b = $('copy'), url = location.href.split('#')[0];
+    function ok() { b.textContent = 'اتنسخ'; setTimeout(function () { b.textContent = 'انسخ اللينك'; }, 1600); }
+    try { navigator.clipboard.writeText(url).then(ok, function () { b.textContent = url; }); } catch (e) { b.textContent = url; }
+  });
+
+  // ---- confetti ----
+  var cv = $('confetti'), cx = cv.getContext('2d'), bits = [], cfRaf = 0;
+  function size() { cv.width = innerWidth; cv.height = innerHeight; }
+  addEventListener('resize', size);
+  function stopConfetti() { cancelAnimationFrame(cfRaf); bits = []; cx.clearRect(0, 0, cv.width, cv.height); }
+  function confetti() {
+    size();
+    var colors = ['#ff5a1f', '#1d1500', '#0a7a35', '#2b59ff', '#ff2f92'];
+    for (var i = 0; i < 140; i++) {
+      bits.push({ x: Math.random() * cv.width, y: -20 - Math.random() * cv.height * 0.6,
+        w: 6 + Math.random() * 8, h: 10 + Math.random() * 10, vy: 2 + Math.random() * 4,
+        vx: -1.5 + Math.random() * 3, r: Math.random() * 6, vr: -0.2 + Math.random() * 0.4,
+        c: colors[rnd(colors.length)] });
+    }
+    (function frame() {
+      cx.clearRect(0, 0, cv.width, cv.height);
+      bits.forEach(function (b) {
+        b.x += b.vx; b.y += b.vy; b.r += b.vr;
+        cx.save(); cx.translate(b.x, b.y); cx.rotate(b.r);
+        cx.fillStyle = b.c; cx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h); cx.restore();
+      });
+      bits = bits.filter(function (b) { return b.y < cv.height + 30; });
+      if (bits.length) cfRaf = requestAnimationFrame(frame); else cx.clearRect(0, 0, cv.width, cv.height);
+    })();
+  }
+
+  begin();
+})();
+</script>
+</body>
+</html>
